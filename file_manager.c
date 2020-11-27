@@ -68,7 +68,7 @@ void get_file_names(const char* dirpath, char** files)
 int read_file(char* filepath, char* line, char* method,struct object *data)
 {
 
-	printf("line : %s filepath : %s\n",line,filepath);
+	//printf("line : %s filepath : %s\n",line,filepath);
 	//printf("filepath : %s ",filepath);
 
 	FILE* file = NULL;

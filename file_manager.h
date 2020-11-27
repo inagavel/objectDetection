@@ -5,7 +5,6 @@
 **/
 void get_file_names(const char* dirpath, char** files);
 
-
 /**
 	this methode read a file by method name and store the content in struct object
 	@param filepath the file path needed to read

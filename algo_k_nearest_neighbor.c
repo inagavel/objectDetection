@@ -1,12 +1,12 @@
 
 #include "header.h"
-#define E34_MAX          16 
+#define E34_MAX  16 
 
-float euclidean_distance(float *coord_classified, float *coord_to_be_classified)
+float euclidean_distance(float *coord_classified, float *coord_to_be_classified, const int MAX)
 {
 	float val = 0;
 	int j = 0;
-	while (j < E34_MAX )
+	while (j < MAX )
 	{
 		val += pow(coord_classified[j] - coord_to_be_classified[j],2);
 		j++;
@@ -30,14 +30,12 @@ int compare(struct  class_distance* cd1,struct class_distance* cd2)
 
 void classify(struct class_distance* c_d)
 {
-
 	int i = 0;
 	char *tmp= (char *) malloc( K * strlen(c_d[0].tc.name)+ K);
 	int class_occur[9]={0,0,0,0,0,0,0,0,0}; 
 	while(i < K)
 	{
 		class_occur[c_d[i].id-1]++;
-		printf("%d\n", c_d[i].id);
 		i++;
 	}
 	int index=0;
@@ -55,5 +53,5 @@ void classify(struct class_distance* c_d)
 	}
 	index++;
 
-	printf("class : %d",index);
+	printf("\nCLASS : %d\n",index);
 }

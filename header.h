@@ -17,7 +17,7 @@
 #define FILE_NUMBER      10000 
 #define CLASS_NUMBER     9 
 #define TRAINNING_NUMBER 11
-#define K 4
+#define K 6
 /*
 const char* CLASS_1 = "s01";
 const char* CLASS_2 = "s02";

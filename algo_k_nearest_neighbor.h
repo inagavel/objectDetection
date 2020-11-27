@@ -3,7 +3,7 @@
 * @param coord_classified is the  classified object coordonates 
 * @param new_object is the  object's coordonates  to be classified  
 **/
-float euclidean_distance(float *coord_classified, float *coord_to_be_classified);
+float euclidean_distance(float *coord_classified, float *coord_to_be_classified, const int MAX);
 
 
 /**
