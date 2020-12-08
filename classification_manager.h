@@ -14,7 +14,7 @@ int add_method_data(char* line,  struct object *an_object, char *method, int *i)
 * @parm str1 the main string
 * @parm str2 the substring
 **/
-bool conatains(char* str1,char* str2);
+bool contains(char* str1,char* str2);
 
 
 /**

@@ -33,9 +33,11 @@ void classify(struct class_distance* c_d)
 	int i = 0;
 	char *tmp= (char *) malloc( K * strlen(c_d[0].tc.name)+ K);
 	int class_occur[9]={0,0,0,0,0,0,0,0,0}; 
+	int score[9]={0,0,0,0,0,0,0,0,0}; 
 	while(i < K)
 	{
 		class_occur[c_d[i].id-1]++;
+		score[c_d[i].id-1]+=K-i;
 		i++;
 	}
 	int index=0;
@@ -49,6 +51,15 @@ void classify(struct class_distance* c_d)
 			index =i;
 			majority = class_occur[i];
 		}
+		else if(class_occur[i] == majority)
+		{
+			if(score[i]> score[index])
+			{
+				index =i;
+				majority = class_occur[i];
+			}
+		}
+
 		i++;
 	}
 	index++;

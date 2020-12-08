@@ -8,6 +8,7 @@
 #include <math.h>
 
 #include "header.h"
+
 int add_method_data(char* line,  struct object * an_object, char *method, int *i)
 {
 	if (strcmp(method, "E34") == 0) 
@@ -39,15 +40,15 @@ int add_method_data(char* line,  struct object * an_object, char *method, int *i
 	return 0;
 }
 
-bool conatains(char* str1,char* str2)
+bool contains(char* str1,char* str2)
 {
-		char * ptr;
+	char * ptr;
 
-		ptr = strstr(str1, str2);
-    	if(ptr != NULL) // skip the . and .. files in Unix OS
-    	{
-    		return true;
-    	}
+	ptr = strstr(str1, str2);
+   	if(ptr != NULL) // skip the . and .. files in Unix OS
+    {
+    	return true;
+    }
     		
     	
 	return false;
@@ -62,7 +63,7 @@ int add_start_data(struct object* an_object,struct object* training_objects, str
 	while(i < CLASS_NUMBER*TRAINNING_NUMBER)
 	{
 		bool found = false;
-    	if(conatains(an_object[i].name,"001") || conatains(an_object[i].name,"002") || conatains(an_object[i].name,"003")  ) // skip the . and .. files in Unix OS
+    	if(contains(an_object[i].name,"001") || contains(an_object[i].name,"002") || contains(an_object[i].name,"003")  ) // skip the . and .. files in Unix OS
     	{
 			training_objects[j] = an_object[i];
 			j++;
@@ -110,51 +111,52 @@ int add_object(struct object *data,struct training_class *allclass, struct objec
 	while(i < CLASS_NUMBER*TRAINNING_NUMBER)
 	{
 		bool found = false;
-    	if(conatains(data[i].name,"001") || conatains(data[i].name,"002") || conatains(data[i].name,"003")  ) // skip the . and .. files in Unix OS
+
+    	if(contains(data[i].name,"001") || contains(data[i].name,"002") || contains(data[i].name,"003")  ) // skip the . and .. files in Unix OS
     	{
-    		if (conatains(data[i].name,"s01")) 
+    		if (contains(data[i].name,"s01")) 
 			{
 				c_tmp = "s01";
 				id = 1;
 			} 
-			else if  (conatains(data[i].name,"s02")) 
+			else if  (contains(data[i].name,"s02")) 
 			{
 				c_tmp = "s02";
 				id = 2;
 			}
-			else if(conatains(data[i].name,"s03")) 
+			else if(contains(data[i].name,"s03")) 
 			{
 				c_tmp = "s03";
 				id = 3;
 			}
-			else if (conatains(data[i].name,"s04")) 
+			else if (contains(data[i].name,"s04")) 
 			{
 				c_tmp = "s04";
 				id = 4;
 			}
-			else if(conatains(data[i].name,"s05")) 
+			else if(contains(data[i].name,"s05")) 
 			{
 				c_tmp = "s05";
 				id = 5;
 				
 			}
-			else if (conatains(data[i].name,"s06")) 
+			else if (contains(data[i].name,"s06")) 
 			{
 				c_tmp = "s06";
 				id = 6;
 			}
-			else if (conatains(data[i].name,"s07")) 
+			else if (contains(data[i].name,"s07")) 
 			{
 				c_tmp = "s07";
 				id = 7;
 				
 			}
-			else if (conatains(data[i].name,"s08")) 
+			else if (contains(data[i].name,"s08")) 
 			{
 				c_tmp = "s08";
 				id = 8;
 			}
-			else if (conatains(data[i].name,"s09")) 
+			else if (contains(data[i].name,"s09")) 
 			{
 				c_tmp = "s09";
 				id = 9;
@@ -163,6 +165,7 @@ int add_object(struct object *data,struct training_class *allclass, struct objec
 			else /* default: */
 			{
 				printf("CLASS NOT FOUND");
+				return (1);
 			}
 
 			if(c_tmp != NULL){
@@ -180,7 +183,10 @@ int add_object(struct object *data,struct training_class *allclass, struct objec
 							if(allclass[m].element[l] == NULL){
 								
 								allclass[m].element[l] = &data[i];
+								
+								//test_objects[k] = data[i];  // cas clusterin
 								allclass[m].id = id;
+								//test_objects[k] = data[i];
 								//printf("m:%d,%d     c_tmp :%s  name :%s\n",m,l,c_tmp,allclass[m].element[l]->name );
 								ok = true;
 								break;
@@ -189,11 +195,11 @@ int add_object(struct object *data,struct training_class *allclass, struct objec
 							l++;
 						}
 					}
-
 					m++;
 				}
 			}
 			j++;
+			//k++;
 		} 
 		// not 3ths elements
 		else 
