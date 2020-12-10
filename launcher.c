@@ -11,10 +11,10 @@ int classes_f0[72];
 int classes_gfd[72];
 int classes_sa[72];
 
-int classify_with_k_nearest_neighbor(struct training_class classifieddata[CLASS_NUMBER*TRAINNING_NUMBER], struct object* datatoclassify,int indexObject);
+int classify_with_k_nearest_neighbor(struct training_class classifieddata[CLASS_NUMBER*TRAINNING_NUMBER], struct object datatoclassify[],int indexObject);
 int classify_with_clustering(struct object datatoclassify[]);
 void show_class(int * classes, struct object* datatoclassify);
-float ratio_reslut(int * classes,struct object ** datatoclassify);
+float ratio_reslut(int * classes,struct object * datatoclassify);
 float ratio_result_cluster(int * classes,struct object ** datatoclassify);
 
 int main(int argc, char *argv[])
@@ -23,7 +23,7 @@ int main(int argc, char *argv[])
 	struct object data[CLASS_NUMBER*TRAINNING_NUMBER];
 	struct object classifieddata[CLASS_NUMBER*4];
 	struct training_class allclass[CLASS_NUMBER*TRAINNING_NUMBER];
-	struct object  datatoclassify[CLASS_NUMBER*TRAINNING_NUMBER];
+	struct object  datatoclassify[CLASS_NUMBER*TRAINNING_NUMBER+20];
 	struct object datatoclassify_clustering[PICTURES_NUMBER];
 
 	
@@ -76,28 +76,12 @@ int main(int argc, char *argv[])
 
 	add_object(data,allclass,datatoclassify,indexArray);
 
-	for(int j =0  ; j<TRAINNING_NUMBER*CLASS_NUMBER; j++)
-	{
-	//	printf("DATATOCLASSIFY%d , %s  \n",j,datatoclassify[j ].name) ;	
-	}
-/*
-	printf("DEBUT\n");
-
-	for(int j =0  ; j<TRAINNING_NUMBER*CLASS_NUMBER; j++)
-	{
-		printf("%d , %d  \n",j,indexArray[j]) ;	
-	}
-	
-*/
-
-
-
-
-	int choice = 2;
+	int choice = 1;
 	if(choice == 1)
 	{
-		for(int j =0  ; j<PICTURES_NUMBER - 3 * CLASS_NUMBER ; j++)
+		for(int j =0  ; j< PICTURES_NUMBER - 3 * CLASS_NUMBER; j++)
 		{
+
 			classify_with_k_nearest_neighbor(allclass,datatoclassify,j);
 			printf("--------------------------------------------\n");
 		}
@@ -113,7 +97,7 @@ int main(int argc, char *argv[])
 		{
 			for(j = 0 ; j < 3; j++)
 			{
-				datatoclassify_clustering[k++] = allclass[i].element[j];
+				datatoclassify_clustering[k++] = *allclass[i].element[j];
 			}
 		}
 		
@@ -122,32 +106,16 @@ int main(int argc, char *argv[])
 			datatoclassify_clustering[k++] = datatoclassify[j];
 		}
 
-
-		for(int j =0  ; j<PICTURES_NUMBER ; j++)
-		{
-
-			printf("datatoclassify_clustering:    %d , %s\n",j,datatoclassify_clustering[j].name) ;
-
-		}
-		printf("AVANT clusting");
+		printf("START clusting");
 		classify_with_clustering(datatoclassify_clustering);
-		printf("APRES clusting");
+		printf("FINISH clusting");
 
 	}
 	int i =0;
 
-	for(int j =0  ; j<TRAINNING_NUMBER*CLASS_NUMBER; j++)
-		{
-			printf("%d , name : %s  \n",j,filesname[j]) ;	
-		}
-/*	while(classifieddata[i].name!=NULL)
-	{
-		printf("%d:  %s \n",i, classifieddata[i].name) ;
-		i++;
-	}
-*/	
+
 	
-/*
+
 	//show_class(classes_e34,datatoclassify);
 		printf("----------------------------------\n");
 		printf("E34 : %f\n", ratio_reslut(classes_e34,datatoclassify));
@@ -158,7 +126,7 @@ int main(int argc, char *argv[])
 	
 	// RATIO
 
-	*/
+	
 	
 
     return 0;
@@ -172,16 +140,14 @@ float ratio_result_cluster(int * classes,struct object ** datatoclassify)
 	expected_classes(total,datatoclassify,expected_class);
 	return success_ratio_only_groups(total,classes,expected_class);
 }*/
-/*
-float ratio_reslut(int * classes,struct object ** datatoclassify)
+
+float ratio_reslut(int * classes,struct object * datatoclassify)
 {
 	int total = PICTURES_NUMBER - 3 * CLASS_NUMBER;
 	int expected_class[total];
 	expected_classes(total,datatoclassify,expected_class);
 	return success_ratio(total,classes,expected_class);
 }
-*/
-
 
 void show_class(int * classes, struct object* datatoclassify)
 {
@@ -252,12 +218,16 @@ int classify_with_clustering(struct object datatoclassify[]){
 	return 0;
 }
 
-int classify_with_k_nearest_neighbor(struct training_class allclass[CLASS_NUMBER*TRAINNING_NUMBER],struct object* datatoclassify,int indexObject)
+int classify_with_k_nearest_neighbor(struct training_class allclass[CLASS_NUMBER*TRAINNING_NUMBER],struct object datatoclassify[],int indexObject)
 {
 	struct  class_distance c_d_e34[CLASS_NUMBER*3];
 	struct  class_distance c_d_f0 [CLASS_NUMBER*3];
 	struct  class_distance c_d_gfd[CLASS_NUMBER*3];
 	struct  class_distance c_d_sa [CLASS_NUMBER*3];
+/*
+	struct class_distance * c_d_gfd;
+	c_d_gfd = malloc(CLASS_NUMBER*3 * sizeof(struct class_distance*));
+*/
 	printf("\nclassify_with_k_nearest_neighbor\n");
 	
 	int b = indexObject;	
@@ -269,24 +239,25 @@ int classify_with_k_nearest_neighbor(struct training_class allclass[CLASS_NUMBER
 
 	while (i < CLASS_NUMBER)
 	{
+
 		j = 0;
 		while (j < 3)
 		{
-			c_d_e34[k].distance  =  euclidean_distance(allclass[i].element[j].e34 ,datatoclassify[indexObject].e34, E34_MAX);
-			c_d_f0[k].distance   =  euclidean_distance(allclass[i].element[j].f0  ,datatoclassify[indexObject].f0 ,  F0_MAX);
-			c_d_gfd[k].distance  =  euclidean_distance(allclass[i].element[j].gfd ,datatoclassify[indexObject].gfd, GFD_MAX);
-			c_d_sa[k] .distance  =  euclidean_distance(allclass[i].element[j].sa  ,datatoclassify[indexObject].sa ,  SA_MAX);
+			c_d_e34[k].distance  =  euclidean_distance(allclass[i].element[j]->e34 ,datatoclassify[indexObject].e34, E34_MAX);
+			c_d_f0[k].distance   =  euclidean_distance(allclass[i].element[j]->f0  ,datatoclassify[indexObject].f0 ,  F0_MAX);
+			c_d_gfd[k].distance  =  euclidean_distance(allclass[i].element[j]->gfd ,datatoclassify[indexObject].gfd, GFD_MAX);
+			c_d_sa[k] .distance  =  euclidean_distance(allclass[i].element[j]->sa  ,datatoclassify[indexObject].sa ,  SA_MAX);
 			
-			c_d_e34[k].tc.name   = allclass[i].name;
+			c_d_e34[k].tc.name   = allclass[i].element[j]->name;
 			c_d_e34[k].id        = allclass[i].id;
 
-			c_d_f0[k].tc.name    = allclass[i].name;
+			c_d_f0[k].tc.name    = allclass[i].element[j]->name;
 			c_d_f0[k].id         = allclass[i].id;
 
-			c_d_gfd[k].tc.name   = allclass[i].name;
+			c_d_gfd[k].tc.name   = allclass[i].element[j]->name;
 			c_d_gfd[k].id        = allclass[i].id;
 
-			c_d_sa[k].tc.name    = allclass[i].name;
+			c_d_sa[k].tc.name    = allclass[i].element[j]->name;
 			c_d_sa[k].id         = allclass[i].id;
 			
 			j++;
@@ -294,21 +265,22 @@ int classify_with_k_nearest_neighbor(struct training_class allclass[CLASS_NUMBER
 		}
 		i++;
 	}
-	printf("\nAVANT EUCLIDIENE\n");
-	for(int j =0  ; j<TRAINNING_NUMBER*CLASS_NUMBER; j++)
-	{
-	//	printf("%d , %s  \n",j,datatoclassify[j].name) ;	
-	}
+	/*printf("before sirt\n");
+	for(int j =0  ; j<PICTURES_NUMBER - CLASS_NUMBER*3; j++)
+		{
+			printf("%d , %s \n",j,datatoclassify[j].name) ;
 
-	//qsort((void*)&c_d_e34,CLASS_NUMBER*3,sizeof(struct class_distance),(compfn)compare);
-	//qsort((void*)&c_d_f0 ,CLASS_NUMBER*3,sizeof(struct class_distance),(compfn)compare);
-	qsort((void*) &c_d_gfd, CLASS_NUMBER, 10000, (compfn)compare);
-	//qsort((void*)&c_d_sa ,CLASS_NUMBER*3,sizeof(struct class_distance),(compfn)compare);
+		}
+*/
+	qsort((void*)&c_d_e34, CLASS_NUMBER*3,sizeof(struct class_distance),(compfn)compare);
+	qsort((void*)&c_d_f0 , CLASS_NUMBER*3,sizeof(struct class_distance),(compfn)compare);
+	qsort((void*)&c_d_gfd, CLASS_NUMBER*3,sizeof(struct class_distance), (compfn)compare);
+	qsort((void*)&c_d_sa , CLASS_NUMBER*3,sizeof(struct class_distance),(compfn)compare);
 
-	printf("AFETER SORT\n");
-/*	i = 0;
-	printf("\nMETHOD E34\n");
+	//printf("after sort sirt\n");
 	printf("%d : %s\n",indexObject,datatoclassify[indexObject].name);
+	i = 0;
+	printf("\nMETHOD E34\n");
 
   	 while (i < K)
 	{
@@ -328,37 +300,28 @@ int classify_with_k_nearest_neighbor(struct training_class allclass[CLASS_NUMBER
 	}
 
 	classes_f0[indexObject] = classify(c_d_f0);
-*/
-
-	printf("\nAPRES EUCLIDIENE : %s\n",c_d_gfd[i].tc.name);
-	for(int j =0  ; j<TRAINNING_NUMBER*CLASS_NUMBER; j++)
-	{
-		//printf("%d , %s  \n",j,datatoclassify[j].name) ;	
-	}
 
 	printf("\nMETHOD GFD\n");
-	printf("indexObject  : %d\n",indexObject);
-	//int b = 0;
-	printf("%d : %s ",indexObject,c_d_gfd[0].tc.name);
+	printf("\nindexObject  : %d\n",indexObject);
+	printf("%d : %s \n",indexObject,datatoclassify[indexObject].name);
 	i = 0;
 	while (i < K)
 	{
 		printf("name :  %s    %f\n", c_d_gfd[i].tc.name, c_d_gfd[i].distance);
 		i++;
 	}
-	printf("\nFINISH 1 WITH SUCCESS\n");
-	classes_gfd[b] = classify(c_d_gfd);
+
+	classes_gfd[indexObject] = classify(c_d_gfd);
 
 	i = 0;
-/*	printf("\nMETHOD SA\n");
-	printf("%d : %s\n",indexObject,datatoclassify[indexObject].name);
+	printf("\nMETHOD SA\n");
 	while (i < K)
 	{
 		printf("name :  %s    %f\n", c_d_sa[i].tc.name, c_d_sa[i].distance);
 		i++;
 	}
 	classes_sa[indexObject] = classify(c_d_sa); 
-	*/
+	
 	printf("\nFINISH 2 WITH SUCCESS\n");
 	return 0;
 }

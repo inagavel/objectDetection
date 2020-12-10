@@ -34,7 +34,7 @@ struct object{
 
 struct training_class{
 	char *name;
-	struct object element[CLASS_NUMBER];
+	struct object *element[CLASS_NUMBER];
 	int id;
 };
 

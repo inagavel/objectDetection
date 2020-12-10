@@ -9,8 +9,8 @@ float euclidean_distance(float coord_classified[], float coord_to_be_classified[
 {
 	
 
-	float c_c[MAX];
-	float c_t[MAX];
+	float c_c;
+	float c_t;
 	
 	float val = 0;
 	int j = 0;
@@ -20,13 +20,30 @@ float euclidean_distance(float coord_classified[], float coord_to_be_classified[
 		j++;
 	}
 	return sqrt(val);
-}
+	/*
+	float* c_c;
+	c_c = malloc(CLASS_NUMBER * sizeof(float*));
 
+	float* c_t;
+	c_t = malloc(CLASS_NUMBER * sizeof(float*));
+	c_c = coord_classified;
+	c_t = coord_to_be_classified;
+	float val = 0;
+	int j = 0;
+	while (j < MAX )
+	{
+		val += pow(c_c[j] - c_t[j],2);
+		j++;
+	}
+	return sqrt(val);
+	*/
+}
 
 int compare(struct  class_distance* cd1,struct class_distance* cd2)
 {
-	const struct  class_distance* c1 = cd1;
-   	const struct  class_distance* c2 = cd2;
+
+	const struct  class_distance* c1 = (const struct  class_distance*)cd1;
+   	const struct  class_distance* c2 = (const struct  class_distance*)cd2;
 
    	 if (c1->distance < c2->distance)
       return -1;
@@ -39,7 +56,7 @@ int compare(struct  class_distance* cd1,struct class_distance* cd2)
 int classify(struct class_distance* c_d)
 {
 	int i = 0;
-	char *tmp= (char *) malloc( K * strlen(c_d[0].tc.name)+ K);
+	//char *tmp= (char *) malloc( K * strlen(c_d[0].tc.name)+ K);
 	int class_occur[9]={0,0,0,0,0,0,0,0,0}; 
 	int score[9]={0,0,0,0,0,0,0,0,0}; 
 	while(i < K)
@@ -73,5 +90,6 @@ int classify(struct class_distance* c_d)
 	index++;
 
 	printf("CLASS : %d\n",index);
+//	free(tmp);
 	return index;
 }

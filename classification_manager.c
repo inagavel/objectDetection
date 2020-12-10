@@ -89,13 +89,6 @@ int initialize_training_class(struct training_class* allclass)
 	while(i < CLASS_NUMBER)
 	{
 		allclass[i].name = class_array[i];
-
-		int j = 0;
-		while( j < CLASS_NUMBER*TRAINNING_NUMBER)
-		{
-			//allclass[i].element[j] = NULL;
-			j++;
-		}
 		i++;
 	}
 
@@ -113,7 +106,7 @@ int add_object(struct object *data,struct training_class *allclass, struct objec
 	{
 		bool found = false;
 
-    	if(contains(data[i].name,"001") || contains(data[i].name,"002") || contains(data[i].name,"011")  ) // skip the . and .. files in Unix OS
+    	if(contains(data[i].name,"001") || contains(data[i].name,"002") || contains(data[i].name,"003")  ) // skip the . and .. files in Unix OS
     	{
     		if (contains(data[i].name,"s01")) 
 			{
@@ -179,16 +172,12 @@ int add_object(struct object *data,struct training_class *allclass, struct objec
 						int l = 0;
 						while(l < CLASS_NUMBER*TRAINNING_NUMBER)
 						{
-							//printf("%s\n",allclass[m].element[l].name );
 							
-							if(allclass[m].element[l].name == NULL){
+							if(allclass[m].element[l] == NULL){
 								
-								allclass[m].element[l] = data[i];
+								allclass[m].element[l] = &data[i];
 								
-								//test_objects[k] = data[i];  // cas clusterin
 								allclass[m].id = id;
-								//test_objects[k] = data[i];
-								//printf("m:%d,%d     c_tmp :%s  name :%s\n",m,l,c_tmp,allclass[m].element[l]->name );
 								ok = true;
 								break;
 							}
@@ -206,10 +195,8 @@ int add_object(struct object *data,struct training_class *allclass, struct objec
 		else 
 		{
 			test_objects[k] = data[i];
-			//printf("%d , %s  \n",k,test_objects[k].name) ;
 			indexArray[k] = i;
 			k++;
-				
 		}	
 		i++;
 	} 
