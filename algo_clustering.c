@@ -5,7 +5,7 @@
 
 
 
-void mean(int nbDimensions , float values[][nbDimensions] , int* classes , int considered_class , float res[nbDimensions]) {
+void mean(int nbDimensions , float **values , int* classes , int considered_class , float res[nbDimensions]) {
 
 	int n = 0 ;
 	int i,j ;
@@ -40,7 +40,7 @@ void mean(int nbDimensions , float values[][nbDimensions] , int* classes , int c
 }
 
 
-void allmeans(int nbDimensions , float values[][nbDimensions] , int* classes, float means[][nbDimensions]) {
+void allmeans(int nbDimensions , float **values , int* classes, float means[][nbDimensions]) {
 	for(int i = 1 ; i<=CLASS_NUMBER ; i++) {
 		mean(nbDimensions,values,classes,i,means[i-1]) ;
 	}
@@ -71,12 +71,12 @@ float distance(float* pointA, float* pointB , int nbDimensions) {
 }
 
 
-int class(int nbDimensions,float value[nbDimensions], float means[][nbDimensions]) {
+int class(int nbDimensions,float **value, float means[][nbDimensions]) {
 	int res = 1 ;
-	float dist = distance(value,means[0],nbDimensions) ;
+	float dist = distance(*value,means[0],nbDimensions) ;
 	float new_dist ;
 	for(int i=1 ; i<CLASS_NUMBER ; i++) {
-		new_dist = distance(value,means[i],nbDimensions) ;
+		new_dist = distance(*value,means[i],nbDimensions) ;
 		if(new_dist<dist) {
 			dist = new_dist ;
 			res = i+1 ;
@@ -85,7 +85,7 @@ int class(int nbDimensions,float value[nbDimensions], float means[][nbDimensions
 	return res ;
 }
 
-void kmeans(int nbDimensions , float values[][nbDimensions] , float means[][nbDimensions], int* classes , int permitted_occurences , int* res) {
+void kmeans(int nbDimensions , float **values , float means[][nbDimensions], int* classes , int permitted_occurences , int* res) {
 
 	int i;
 	allmeans(nbDimensions,values,classes,means) ;
@@ -94,7 +94,7 @@ void kmeans(int nbDimensions , float values[][nbDimensions] , float means[][nbDi
 	int classe ;
 
 	for(i = 0 ; i<PICTURES_NUMBER ; i++) {
-		classe = class(nbDimensions,values[i],means) ;
+		classe = class(nbDimensions,&values[i],means) ;
 		identique = (identique && (classes[i]==classe)) ;
 		classes[i] = classe ;
 	}
@@ -114,16 +114,20 @@ void kmeans(int nbDimensions , float values[][nbDimensions] , float means[][nbDi
 
 }
 
-void cluster(struct object ** objects , char* method , int nbDimensions , int* res) {
+void cluster(struct object * objects , char* method , int nbDimensions , int* res) {
 
-	float values[PICTURES_NUMBER][nbDimensions] ;
+	float **values;
+	values = malloc(PICTURES_NUMBER * sizeof(float*));
+	for(int j = 0 ; j<nbDimensions ; j++) {
+		values[j] =	malloc(nbDimensions * sizeof(float*));
+	}
 	int i;
 	int j;
 	if (strcmp(method, "E34") == 0)
 	{
 		for(i = 0 ; i<PICTURES_NUMBER ; i++)  {
 			for(j = 0 ; j<nbDimensions ; j++) {
-				values[i][j] = objects[i]->e34[j] ;
+				values[i][j] = objects[i].e34[j] ;
 			}
 		}
 	}
@@ -131,23 +135,38 @@ void cluster(struct object ** objects , char* method , int nbDimensions , int* r
 	{
 		for(i = 0 ; i<PICTURES_NUMBER ; i++)  {
 			for(j = 0 ; j<nbDimensions ; j++) {
-				values[i][j] = objects[i]->f0[j] ;
+				values[i][j] = objects[i].f0[j] ;
 			}
 		}
 	}
 	else if (strcmp(method, "GFD") == 0)
 	{
+		for(int j =0  ; j<PICTURES_NUMBER ; j++)
+		{
+			//new_datatoclassify[j] = datatoclassify[j];
+			printf("GFD1  %d , %s \n",j,objects[j].name) ;
+
+		}	
+
 		for(i = 0 ; i<PICTURES_NUMBER ; i++)  {
 			for(j = 0 ; j<nbDimensions ; j++) {
-				values[i][j] = objects[i]->gdf[j] ;
+				//float f = &;
+				values[i][j] = objects[i].gfd[j] ;
 			}
 		}
+
+		for(int j =0  ; j<PICTURES_NUMBER ; j++)
+		{
+			//new_datatoclassify[j] = datatoclassify[j];
+			printf("GFD2  %d , %s \n",j,objects[j].name) ;
+
+		}	
 	}
 	else if (strcmp(method, "SA") == 0)
 	{
 		for(i = 0 ; i<PICTURES_NUMBER ; i++)  {
 			for(j = 0 ; j<nbDimensions ; j++) {
-				values[i][j] = objects[i]->sa[j] ;
+				values[i][j] = objects[i].sa[j] ;
 			}
 		} ;
 	}
@@ -177,9 +196,17 @@ void cluster(struct object ** objects , char* method , int nbDimensions , int* r
 	float means[CLASS_NUMBER][nbDimensions] ;
 
 	kmeans(nbDimensions,values,means,first_classes,NB_OCCURRENCES_MAX,res) ;
+
+	//float **values;
+	
+	for(int j = 0 ; j<nbDimensions ; j++) {
+		free(values[j]);
+	}
+
+	free(values);
 }
 
-int clustering(struct object ** objects , char* method , int* res) {
+int clustering(struct object * objects , char* method , int* res) {
 
 	int nbDimensions ;
 

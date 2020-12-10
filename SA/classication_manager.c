@@ -15,7 +15,7 @@ int store_data(char* line,  struct object *data, char *method, int *i)
 	else if (strcmp(method, "GFD") == 0)
 	{
 	//	 printf("METHOD  GFD");
-		data->gdf[*i] = atof(line);
+		data->gfd[*i] = atof(line);
 	}
 	else if (strcmp(method, "SA") == 0)
 	{

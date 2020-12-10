@@ -24,7 +24,7 @@ int add_method_data(char* line,  struct object * an_object, char *method, int *i
 	else if (strcmp(method, "GFD") == 0)
 	{
 	//	 printf("METHOD  GFD");
-		an_object->gdf[*i] = atof(line);
+		an_object->gfd[*i] = atof(line);
 	}
 	else if (strcmp(method, "SA") == 0)
 	{
@@ -93,7 +93,7 @@ int initialize_training_class(struct training_class* allclass)
 		int j = 0;
 		while( j < CLASS_NUMBER*TRAINNING_NUMBER)
 		{
-			allclass[i].element[j] = NULL;
+			//allclass[i].element[j] = NULL;
 			j++;
 		}
 		i++;
@@ -101,7 +101,8 @@ int initialize_training_class(struct training_class* allclass)
 
 	return 0;
 }
-int add_object(struct object *data,struct training_class *allclass, struct object *test_objects)
+
+int add_object(struct object *data,struct training_class *allclass, struct object *test_objects, int * indexArray)
 {
 	char *c_tmp;
 	int i = 0;
@@ -112,7 +113,7 @@ int add_object(struct object *data,struct training_class *allclass, struct objec
 	{
 		bool found = false;
 
-    	if(contains(data[i].name,"001") || contains(data[i].name,"002") || contains(data[i].name,"003")  ) // skip the . and .. files in Unix OS
+    	if(contains(data[i].name,"001") || contains(data[i].name,"002") || contains(data[i].name,"011")  ) // skip the . and .. files in Unix OS
     	{
     		if (contains(data[i].name,"s01")) 
 			{
@@ -137,8 +138,7 @@ int add_object(struct object *data,struct training_class *allclass, struct objec
 			else if(contains(data[i].name,"s05")) 
 			{
 				c_tmp = "s05";
-				id = 5;
-				
+				id = 5;				
 			}
 			else if (contains(data[i].name,"s06")) 
 			{
@@ -149,7 +149,6 @@ int add_object(struct object *data,struct training_class *allclass, struct objec
 			{
 				c_tmp = "s07";
 				id = 7;
-				
 			}
 			else if (contains(data[i].name,"s08")) 
 			{
@@ -180,9 +179,11 @@ int add_object(struct object *data,struct training_class *allclass, struct objec
 						int l = 0;
 						while(l < CLASS_NUMBER*TRAINNING_NUMBER)
 						{
-							if(allclass[m].element[l] == NULL){
+							//printf("%s\n",allclass[m].element[l].name );
+							
+							if(allclass[m].element[l].name == NULL){
 								
-								allclass[m].element[l] = &data[i];
+								allclass[m].element[l] = data[i];
 								
 								//test_objects[k] = data[i];  // cas clusterin
 								allclass[m].id = id;
@@ -205,7 +206,10 @@ int add_object(struct object *data,struct training_class *allclass, struct objec
 		else 
 		{
 			test_objects[k] = data[i];
+			//printf("%d , %s  \n",k,test_objects[k].name) ;
+			indexArray[k] = i;
 			k++;
+				
 		}	
 		i++;
 	} 

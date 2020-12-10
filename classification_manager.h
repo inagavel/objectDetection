@@ -38,4 +38,4 @@ int initialize_training_class(struct training_class* allclass);
 * @param training_objects training object array
 * @param test_objects test object array
 **/
-int add_object(struct object* an_object, struct training_class* allclass, struct object* test_objects);
+int add_object(struct object* an_object, struct training_class* allclass, struct object* test_objects, int * indexArray);

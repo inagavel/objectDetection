@@ -1,7 +1,7 @@
 all: launcher
 
-launcher: launcher.o classification_manager.o file_manager.o algo_k_nearest_neighbor.o algo_clustering.o
-	 gcc  launcher.o classification_manager.o file_manager.o algo_k_nearest_neighbor.o algo_clustering.o  -o launcher
+launcher: launcher.o classification_manager.o file_manager.o algo_k_nearest_neighbor.o algo_clustering.o record.o
+	 gcc  launcher.o classification_manager.o file_manager.o algo_k_nearest_neighbor.o algo_clustering.o record.o -o launcher
 
 launcher.o: launcher.c 
 	gcc -c launcher.c 
@@ -18,7 +18,12 @@ algo_k_nearest_neighbor.o: algo_k_nearest_neighbor.c
 algo_clustering.o: algo_clustering.c
 	gcc -c algo_clustering.c
 
+record.o: record.c
+	gcc -c record.c
+
+
+
 clean: 
 	rm *.o launcher
 do:
-	./launcher
+	./launcher 

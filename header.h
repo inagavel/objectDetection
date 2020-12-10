@@ -1,3 +1,4 @@
+#ifndef  TAILLE_MAX
 #include <stdlib.h>
 #include <stdio.h>
 #include <unistd.h>
@@ -17,7 +18,7 @@
 #define FILE_NUMBER      10000 
 #define CLASS_NUMBER     9 
 #define TRAINNING_NUMBER 11
-#define K 6
+#define K 4
 #define PICTURES_NUMBER 99
 
 typedef enum  {E34 , F0 , GFD , SA} method ;
@@ -27,13 +28,13 @@ struct object{
 	char *name;
 	float e34[E34_MAX];
 	float f0[F0_MAX];
-	float gdf[GFD_MAX];
+	float gfd[GFD_MAX];
 	float sa[SA_MAX];
 };
 
 struct training_class{
 	char *name;
-	struct object* element[CLASS_NUMBER];
+	struct object element[CLASS_NUMBER];
 	int id;
 };
 
@@ -42,7 +43,4 @@ struct class_distance{
 	float distance;
 	int id;
 };
-
-
-
-int clustering(struct object ** objects , char* method , int* res) ;
+#endif
