@@ -20,4 +20,4 @@ int compare(struct  class_distance* cd1,struct class_distance* cd2);
 * This method is used by internal c function qsort to sort data
 * @param c_d array of distance between classifieds objects and the new object to be classified
 **/
-int classify(struct class_distance* c_d);
+int classify(struct class_distance* c_d, int K);

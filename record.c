@@ -95,11 +95,7 @@ short only_one(int tab[CLASS_NUMBER]) {
 	}
 	return 1 ;
 }
-
-
-
-float success_ratio_only_groups(int size , int find_classes[size] , int expected_class[size]) {
-
+void change_classes(int size , int find_classes[size] , int expected_class[size]) {
 	int i,j ;
 	int used_classes[CLASS_NUMBER] ;
 	int replace[CLASS_NUMBER] ;
@@ -110,8 +106,8 @@ float success_ratio_only_groups(int size , int find_classes[size] , int expected
 
 	/*
 	 * the_reals_class[i][j] (when the values will be computed)
-	 * will be almost the number of objects identified as class n°(i+1)
-	 * whereas they are from class n°(j+1)
+	 * will be almost the number of objects identified as class n∞(i+1)
+	 * whereas they are from class n∞(j+1)
 	 *
 	 * In fact, this value will be the difference between this number
 	 * and the biggest j for this i.
@@ -191,5 +187,72 @@ float success_ratio_only_groups(int size , int find_classes[size] , int expected
 	for(i = 0 ; i<size ; i++)
 		find_classes[i] = replace[(find_classes[i])-1] ;
 
-	return success_ratio(size,find_classes,expected_class) ;
+}
+
+void confusion_matrice(int size, int finded_classes[size] , int expected_classes[size] , int res[CLASS_NUMBER][4]) {
+
+	/*float **values;
+	values = malloc(PICTURES_NUMBER * sizeof(float*));
+	for(int j = 0 ; j < PICTURES_NUMBER ; j++) {
+		values[j] =	malloc(nbDimensions * sizeof(float));
+	}*/
+
+	int i,j,classeF,classeE ;
+
+	for(i=0 ; i<size ; i++) {
+		for(j=0 ; j<4 ; j++) {
+			res[i][j] = 0 ;
+		}
+	}
+
+	int tp = TRUE_POSITIVE ;
+	int tn = TRUE_NEGATIVE ;
+	int fp = FALSE_POSITIVE ;
+	int fn = FALSE_NEGATIVE ;
+
+	for(i=0 ; i<size ; i++) {
+		for(j=0 ; j<4 ; j++) {
+			res[i][j] = 0 ;
+		}
+	}
+
+
+	for(i = 0 ; i<size ; i++) {
+
+		classeF = finded_classes[i] ;
+		classeE = expected_classes[i] ;
+
+		if(classeE == classeF) {
+
+			for(j=0 ; j<CLASS_NUMBER ; j++) {
+
+				if(j+1 == classeE)
+					res[j][tp]++ ;
+
+				else
+					res[j][tn]++ ;
+
+			}
+
+		}
+
+		else {
+
+			for(j=0 ; j<CLASS_NUMBER ; j++) {
+
+				if(j+1 == classeE)
+					res[j][fn]++ ;
+
+				else if(j+1 == classeF)
+					res[j][fp]++ ;
+
+				else
+					res[j][tn]++ ;
+
+			}
+
+		}
+
+	}
+
 }

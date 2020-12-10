@@ -1,8 +1,6 @@
 #include <time.h>
-
 #include "header.h"
 #include "algo_clustering.h"
-
 
 
 void mean(int nbDimensions , float **values , int* classes , int considered_class , float res[nbDimensions]) {
@@ -27,8 +25,6 @@ void mean(int nbDimensions , float **values , int* classes , int considered_clas
 		}
 
 	}
-
-
 
 	for(i = 0 ; i<nbDimensions ; i++) {
 
@@ -118,8 +114,8 @@ void cluster(struct object * objects , char* method , int nbDimensions , int* re
 
 	float **values;
 	values = malloc(PICTURES_NUMBER * sizeof(float*));
-	for(int j = 0 ; j<nbDimensions ; j++) {
-		values[j] =	malloc(nbDimensions * sizeof(float*));
+	for(int j = 0 ; j < PICTURES_NUMBER ; j++) {
+		values[j] =	malloc(nbDimensions * sizeof(float));
 	}
 	int i;
 	int j;
@@ -141,26 +137,13 @@ void cluster(struct object * objects , char* method , int nbDimensions , int* re
 	}
 	else if (strcmp(method, "GFD") == 0)
 	{
-		for(int j =0  ; j<PICTURES_NUMBER ; j++)
-		{
-			//new_datatoclassify[j] = datatoclassify[j];
-			printf("GFD1  %d , %s \n",j,objects[j].name) ;
-
-		}	
-
+		
 		for(i = 0 ; i<PICTURES_NUMBER ; i++)  {
 			for(j = 0 ; j<nbDimensions ; j++) {
-				//float f = &;
 				values[i][j] = objects[i].gfd[j] ;
 			}
 		}
 
-		for(int j =0  ; j<PICTURES_NUMBER ; j++)
-		{
-			//new_datatoclassify[j] = datatoclassify[j];
-			printf("GFD2  %d , %s \n",j,objects[j].name) ;
-
-		}	
 	}
 	else if (strcmp(method, "SA") == 0)
 	{
@@ -183,11 +166,12 @@ void cluster(struct object * objects , char* method , int nbDimensions , int* re
 	/* NB : We choose here a random number which will never be used
 	 * because of a bug which choose always the same first number.
 	 */
-	int alea = (int)(rand() / (double)RAND_MAX * PICTURES_NUMBER) ;
+	srand(time(0));
+	int alea = (int)(rand() % PICTURES_NUMBER) ;
 
 	for(int i = 1 ; i<=CLASS_NUMBER ; i++) {
 		do {
-			alea = (int)(rand() / (double)RAND_MAX * PICTURES_NUMBER) ;
+			alea = (int)(rand() % PICTURES_NUMBER) ;
 			if(first_classes[alea]==0)
 				first_classes[alea] = i ;
 		} while(first_classes[alea] != i) ;
@@ -197,13 +181,13 @@ void cluster(struct object * objects , char* method , int nbDimensions , int* re
 
 	kmeans(nbDimensions,values,means,first_classes,NB_OCCURRENCES_MAX,res) ;
 
-	//float **values;
-	
+	/*
 	for(int j = 0 ; j<nbDimensions ; j++) {
-		free(values[j]);
+		//free(values[j]);
 	}
 
-	free(values);
+	//free(values);
+	*/
 }
 
 int clustering(struct object * objects , char* method , int* res) {
@@ -235,6 +219,3 @@ int clustering(struct object * objects , char* method , int* res) {
 
 	return EXIT_SUCCESS ;
 }
-
-
-

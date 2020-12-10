@@ -21,9 +21,14 @@ algo_clustering.o: algo_clustering.c
 record.o: record.c
 	gcc -c record.c
 
-
-
 clean: 
 	rm *.o launcher
 do:
-	./launcher 
+	# first launch k-plus-proche-voisiens
+	# last k-means
+	 ./launcher 1 1 4 0 
+	# ./launcher  1 
+	#  param 1 : 1 for knn algo or 2 for clustering
+	#  param 2 : method to use
+	#  param 3 : K value
+	#  param 4 : display step details 1 or not 0

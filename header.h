@@ -18,9 +18,12 @@
 #define FILE_NUMBER      10000 
 #define CLASS_NUMBER     9 
 #define TRAINNING_NUMBER 11
-#define K 4
+//#define K 4
 #define PICTURES_NUMBER 99
-
+#define TRUE_POSITIVE 0 
+#define TRUE_NEGATIVE 1 
+#define FALSE_POSITIVE 2 
+#define FALSE_NEGATIVE 3 
 typedef enum  {E34 , F0 , GFD , SA} method ;
 typedef int (*compfn)(const void*, const void*);
 

@@ -51,11 +51,7 @@ void get_file_names(const char* dirpath, char** files)
 	    	nbrFile++;
 	    	j++;
 	    }
-	    else
-	    {
-	    	//printf("%d : %s\n",k,dir->d_name); // On affiche la chaîne     	
 	    
-	    }
 	    k++;
 	    
     }
@@ -67,9 +63,6 @@ void get_file_names(const char* dirpath, char** files)
 
 int read_file(char* filepath, char* line, char* method,struct object *data)
 {
-
-	//printf("line : %s filepath : %s\n",line,filepath);
-	//printf("filepath : %s ",filepath);
 
 	FILE* file = NULL;
 	
@@ -96,7 +89,7 @@ int read_file(char* filepath, char* line, char* method,struct object *data)
 	 	else
 	    {
 	       // On affiche un message d'erreur si on veut
-	       printf("Impossible d'ouvrir le fichier test.txt");
+	       printf("We Can not open the test file.txt");
 	       exit(1);
 	    }
 	}

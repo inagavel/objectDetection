@@ -36,20 +36,24 @@ float success_ratio(int size , int find_classes[size] , int expected_class[size]
 
 
 
+/**
+ * If we use a clustering, even if the data are well classified, the class names can be bad names.
+ * This function change the names of the class to be the closest possible of the good answer.
+ * @param size : the number of classified objects
+ * @param find_classes : the computed classes (it is this table which will be changed)
+ * @param expected_class : the real classes
+ */
+void change_classes(int size , int find_classes[size] , int expected_class[size]) ;
 
 
 /**
- * Return the success ratio (between 0.0 and 1.0) of the classification
- *
- * The diference with the previous function is that if some class have a bad name,
- * it isn't count as an error
- * (for example, if each object on class 2 are computed as class 3 and vice-versa)
- *
+ * This function compute the confusion matrice.
  * @param size : the number of classified objects
  * @param find_classes : the computed classes
  * @param expected_class : the real classes
+ * @param res : the table used to save the result
  */
-float success_ratio_only_groups(int size , int find_classes[size] , int expected_class[size]) ;
+void confusion_matrice(int size, int finded_classes[size] , int expected_classes[size] , int res[CLASS_NUMBER][4]) ;
 
 
 

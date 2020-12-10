@@ -13,22 +13,18 @@ int add_method_data(char* line,  struct object * an_object, char *method, int *i
 {
 	if (strcmp(method, "E34") == 0) 
 	{
-	// printf("METHOD E34gdb --version");
 	  an_object->e34[*i] = atof(line);
 	} 
 	else if (strcmp(method, "F0") == 0)
 	{
-	//	printf("METHOD  F0");
 		an_object->f0[*i] = atof(line);
 	}
 	else if (strcmp(method, "GFD") == 0)
 	{
-	//	 printf("METHOD  GFD");
 		an_object->gfd[*i] = atof(line);
 	}
 	else if (strcmp(method, "SA") == 0)
 	{
-	//	printf("METHOD SA");
 		an_object->sa[*i] = atof(line);
 	}
 	/* more else if clauses */
@@ -76,9 +72,6 @@ int add_start_data(struct object* an_object,struct object* training_objects, str
 		}	
 		i++;
 	} 
-
-	
-	
 	return 0;
 }
 int initialize_training_class(struct training_class* allclass)
@@ -97,11 +90,12 @@ int initialize_training_class(struct training_class* allclass)
 
 int add_object(struct object *data,struct training_class *allclass, struct object *test_objects, int * indexArray)
 {
+
 	char *c_tmp;
 	int i = 0;
 	int j = 0;
 	int k = 0;
-	int id=0;
+	int id= 0;
 	while(i < CLASS_NUMBER*TRAINNING_NUMBER)
 	{
 		bool found = false;
@@ -189,7 +183,6 @@ int add_object(struct object *data,struct training_class *allclass, struct objec
 				}
 			}
 			j++;
-			//k++;
 		} 
 		// not 3ths elements
 		else 
