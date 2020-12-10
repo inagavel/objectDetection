@@ -83,6 +83,18 @@ int main(int argc, char *argv[])
 		{
 
 			classify_with_k_nearest_neighbor(allclass,datatoclassify,j);
+
+			//show_class(classes_e34,datatoclassify);
+		
+	
+	// RATIO
+
+		printf("----------------------------------\n");
+		printf("E34 : %f\n", ratio_reslut(classes_e34,datatoclassify));
+		printf("F0  : %f\n", ratio_reslut(classes_f0,datatoclassify));
+		printf("GFD : %f\n", ratio_reslut(classes_gfd,datatoclassify));
+		printf("SA  : %f\n", ratio_reslut(classes_sa,datatoclassify));
+		printf("----------------------------------\n");
 			printf("--------------------------------------------\n");
 		}
 	}	
@@ -112,22 +124,6 @@ int main(int argc, char *argv[])
 
 	}
 	int i =0;
-
-
-	
-
-	//show_class(classes_e34,datatoclassify);
-		printf("----------------------------------\n");
-		printf("E34 : %f\n", ratio_reslut(classes_e34,datatoclassify));
-		printf("F0  : %f\n", ratio_reslut(classes_f0,datatoclassify));
-		printf("GFD : %f\n", ratio_reslut(classes_gfd,datatoclassify));
-		printf("SA  : %f\n", ratio_reslut(classes_sa,datatoclassify));
-		printf("----------------------------------\n");
-	
-	// RATIO
-
-	
-	
 
     return 0;
 }
@@ -166,7 +162,6 @@ int classify_with_clustering(struct object datatoclassify[]){
 	int expected_class[PICTURES_NUMBER];
 	//expected_classes(PICTURES_NUMBER,datatoclassify,expected_class);
 
-
 	for(int i = 2 ; i < 3 ; i++)
 	{
 
@@ -179,16 +174,10 @@ int classify_with_clustering(struct object datatoclassify[]){
 			default : printf("IL Y A UNE ERREUR !!!!!!! \n") ; return EXIT_FAILURE ;
 		}
 
-		//struct object  new_datatoclassify[CLASS_NUMBER*TRAINNING_NUMBER];
-
-		//memcpy(new_datatoclassify, datatoclassify, CLASS_NUMBER*TRAINNING_NUMBER);
-		//new_datatoclassify = datatoclassify;
 		
 		for(int j =0  ; j<PICTURES_NUMBER ; j++)
 		{
-			//new_datatoclassify[j] = datatoclassify[j];
 			printf("%d , %s %d \n",j,datatoclassify[j].name, classes[j]) ;
-
 		}
 
 		int buffer = clustering(datatoclassify,usedMethod,classes);
@@ -224,17 +213,13 @@ int classify_with_k_nearest_neighbor(struct training_class allclass[CLASS_NUMBER
 	struct  class_distance c_d_f0 [CLASS_NUMBER*3];
 	struct  class_distance c_d_gfd[CLASS_NUMBER*3];
 	struct  class_distance c_d_sa [CLASS_NUMBER*3];
-/*
-	struct class_distance * c_d_gfd;
-	c_d_gfd = malloc(CLASS_NUMBER*3 * sizeof(struct class_distance*));
-*/
+
 	printf("\nclassify_with_k_nearest_neighbor\n");
 	
 	int b = indexObject;	
 	int i = 0;
 	int k = 0;
 	int j = 0;
-	//int indexClass=0;
 
 
 	while (i < CLASS_NUMBER)
@@ -265,19 +250,11 @@ int classify_with_k_nearest_neighbor(struct training_class allclass[CLASS_NUMBER
 		}
 		i++;
 	}
-	/*printf("before sirt\n");
-	for(int j =0  ; j<PICTURES_NUMBER - CLASS_NUMBER*3; j++)
-		{
-			printf("%d , %s \n",j,datatoclassify[j].name) ;
-
-		}
-*/
 	qsort((void*)&c_d_e34, CLASS_NUMBER*3,sizeof(struct class_distance),(compfn)compare);
 	qsort((void*)&c_d_f0 , CLASS_NUMBER*3,sizeof(struct class_distance),(compfn)compare);
 	qsort((void*)&c_d_gfd, CLASS_NUMBER*3,sizeof(struct class_distance), (compfn)compare);
 	qsort((void*)&c_d_sa , CLASS_NUMBER*3,sizeof(struct class_distance),(compfn)compare);
 
-	//printf("after sort sirt\n");
 	printf("%d : %s\n",indexObject,datatoclassify[indexObject].name);
 	i = 0;
 	printf("\nMETHOD E34\n");
